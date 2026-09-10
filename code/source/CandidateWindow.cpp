@@ -227,7 +227,10 @@ int CandidateWindow::GetSelectedIndex() const
 
 void CandidateWindow::SetSelectedIndex(int index)
 {
-
+    if (m_view)
+    {
+		m_view->SetSelectedIndex(index);
+    }
 }
 
 HWND CandidateWindow::GetHandle() const

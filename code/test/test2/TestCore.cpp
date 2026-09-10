@@ -9,6 +9,7 @@ TestCore::TestCore(
 void TestCore::SetCandidates(
     const std::vector<std::wstring>& candidates)
 {
+	m_bIsInputFinished = false;
     m_candidates = candidates;
 
     if (m_candidates.empty())
@@ -108,6 +109,7 @@ void TestCore::CommitCandidate()
         return;
     }
 
+	m_bIsInputFinished = true;
     const std::wstring& candidate =
         m_candidates[m_selectedIndex];
 
@@ -118,6 +120,7 @@ void TestCore::CommitCandidate()
         candidate.c_str());
 
     OutputDebugStringW(L"\n");
+
 }
 
 std::wstring TestCore::GetSelectedCandidate() const
