@@ -11,7 +11,7 @@ public:
 
     virtual bool Create(HWND parent) = 0;
 
-    virtual void SetItems(
+    virtual void SetCandidates(
         const std::vector<std::wstring>& items) = 0;
 
     virtual int GetSelectedIndex() const = 0;

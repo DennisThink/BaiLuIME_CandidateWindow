@@ -3,7 +3,7 @@
 #include "ListCandidateView.h"
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
-    auto view = nullptr;
+    auto view = std::make_unique<ListCandidateView>();
 
     CandidateWindow window(std::move(view));
 
@@ -11,6 +11,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
         return 1;
 
     window.Move(300, 300);
+	std::vector<std::wstring> candidates = { L"Candidate 1", L"Candidate 2", L"Candidate 3" };
+    window.SetCandidates(candidates);
     window.Show();
     MSG msg{};
 

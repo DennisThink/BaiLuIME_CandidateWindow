@@ -61,6 +61,15 @@ bool CandidateWindow::Create(HINSTANCE hInstance)
         return false;
     }
 
+    if(m_view !=nullptr)
+    {
+        if (!m_view->Create(m_hwnd))
+        {
+            DestroyWindow(m_hwnd);
+            m_hwnd = nullptr;
+            return false;
+        }
+	}
     return true;
 }
 
@@ -69,6 +78,10 @@ void CandidateWindow::Hide()
     if (m_hwnd == nullptr)
         return;
 
+    if (m_view)
+    {
+        m_view->Resize(0, 0);
+    }
     ShowWindow(m_hwnd, SW_HIDE);
 }
 
@@ -173,7 +186,11 @@ LRESULT CandidateWindow::HandleMessage(
 
 void CandidateWindow::Show()
 {
-
+    if (m_view)
+    {
+        m_view->Resize(300,200);
+    }
+    ShowWindow(m_hwnd, SW_SHOW);
 }
 
 
@@ -197,7 +214,10 @@ void CandidateWindow::Move(int x, int y)
 void CandidateWindow::SetCandidates(
     const std::vector<std::wstring>& candidates)
 {
-
+    if (m_view)
+    {
+		m_view->SetCandidates(candidates);
+    }
 }
 
 int CandidateWindow::GetSelectedIndex() const

@@ -10,7 +10,7 @@ public:
 
     bool Create(HWND parent) override;
 
-    void SetItems(
+    void SetCandidates(
         const std::vector<std::wstring>& items) override;
 
     int GetSelectedIndex() const override;
