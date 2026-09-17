@@ -27,11 +27,15 @@ public:
         m_candidateWindow->SetCandidates(m_candidates);
 	}
 private:
+    void MoveCandidateWindowLeft();
+    void MoveCandidateWindowRight();
     void SelectCandidate(int index);
     void MoveSelection(int delta);
     void CommitCandidate();
 
 private:
+    int m_nLeftIndex = 0;
+    int m_nStep = 20;
     CandidateWindow* m_candidateWindow;
 
     std::vector<std::wstring> m_candidates;

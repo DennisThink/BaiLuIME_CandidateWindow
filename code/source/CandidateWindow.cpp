@@ -16,6 +16,10 @@ void CandidateWindow::Destroy()
 CandidateWindow::CandidateWindow()
 {
     m_preeditWindow = std::make_unique<PreeditWindow>();
+    if (nullptr != m_preeditWindow)
+    {
+        m_preeditWindow->CreateFont(24, 0, L"Microsoft YaHei");
+    }
     m_CandidateListWindow = std::make_unique<ListCandidateView>();
 }
 

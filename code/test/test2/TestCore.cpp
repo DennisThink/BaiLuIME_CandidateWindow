@@ -6,6 +6,27 @@ TestCore::TestCore()
     m_candidateWindow->Create(NULL,NULL);
 }
 
+void TestCore::MoveCandidateWindowLeft()
+{
+    int nNextLeft = m_nLeftIndex - m_nStep;
+    if (nNextLeft > 0)
+    {
+        m_candidateWindow->Move(nNextLeft, nNextLeft);
+        m_nLeftIndex = nNextLeft;
+    }
+}
+
+void TestCore::MoveCandidateWindowRight()
+{
+    int nNextLeft = m_nLeftIndex + m_nStep;
+    if (nNextLeft < 800)
+    {
+        m_candidateWindow->Move(nNextLeft, nNextLeft);
+        m_nLeftIndex = nNextLeft;
+    }
+}
+
+
 void TestCore::SetCandidates(
     const std::vector<std::wstring>& candidates)
 {
@@ -59,6 +80,14 @@ void TestCore::OnKeyDown(WPARAM key)
     case VK_SPACE:
         CommitCandidate();
         return;
+    case VK_LEFT:
+        {
+            MoveCandidateWindowLeft();
+        }break;
+    case VK_RIGHT:
+    {
+        MoveCandidateWindowRight();
+    }break;
     }
 }
 
