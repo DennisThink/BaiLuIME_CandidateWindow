@@ -6,21 +6,26 @@ ListCandidateView::ListCandidateView()
 
 ListCandidateView::~ListCandidateView()
 {
-    if (m_hwnd != nullptr)
+    if (m_hWnd != nullptr)
     {
-        DestroyWindow(m_hwnd);
-        m_hwnd = nullptr;
+        DestroyWindow(m_hWnd);
+        m_hWnd = nullptr;
+    }
+    if (m_hFont != nullptr)
+    {
+        DeleteObject(m_hFont);
+        m_hFont = nullptr;
     }
 }
 
-bool ListCandidateView::Create(HWND parent)
+bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
 {
-    if (parent == nullptr)
+    if (hParent == nullptr)
     {
         return false;
     }
 
-    m_hwnd = CreateWindowExW(
+    m_hWnd = CreateWindowExW(
         0,
         L"LISTBOX",
         nullptr,
@@ -33,28 +38,62 @@ bool ListCandidateView::Create(HWND parent)
         0,
         300,
         200,
-        parent,
+        hParent,
         nullptr,
         GetModuleHandleW(nullptr),
         nullptr);
-    if (m_hwnd != nullptr)
+    if (m_hWnd != nullptr)
     {
 		OutputDebugStringA("ListCandidateView::Create Succeed\n");
-        return true;
+        //return true;
     }
     else
     {
-        OutputDebugStringA("ListCandidateView::Create Succeed\n");
-        return false;
+        OutputDebugStringA("ListCandidateView::Create Failed\n");
+        //return false;
     }
+
+    m_hFont = CreateFontW(
+        24,                  // 字体高度
+        0,                   // 字体宽度，0 表示默认
+        0,                   // 字体倾斜角度
+        0,
+        FW_NORMAL,           // 字重
+        FALSE,               // 斜体
+        FALSE,               // 下划线
+        FALSE,               // 删除线
+        DEFAULT_CHARSET,
+        OUT_DEFAULT_PRECIS,
+        CLIP_DEFAULT_PRECIS,
+        DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_DONTCARE,
+        L"Microsoft YaHei"
+    );
+
+    if (nullptr == m_hFont)
+    {
+        OutputDebugStringA("ListCandidateView::CreateFont Failed\n");
+    }
+    else
+    {
+        OutputDebugStringA("ListCandidateView::CreateFont Succeed\n");
+    }
+    SendMessageW(
+        m_hWnd,
+        WM_SETFONT,
+        reinterpret_cast<WPARAM>(m_hFont),
+        TRUE
+    );
+
+    return true;
 }
 
 void ListCandidateView::SetCandidates(
     const std::vector<std::wstring>& candidates)
 {
-    if (m_hwnd == nullptr)
+    if (m_hWnd == nullptr)
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Failed m_hwnd==nullptr\n");
+        OutputDebugString(L"ListCandidateView::SetCandidates Failed m_hWnd==nullptr\n");
         return;
     }
     else
@@ -62,17 +101,17 @@ void ListCandidateView::SetCandidates(
         OutputDebugString(L"ListCandidateView::SetCandidates Succeed\n");
     }
 
-    if(IsWindow(m_hwnd) == FALSE)
+    if(IsWindow(m_hWnd) == FALSE)
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Failed IsWindow(m_hwnd) == FALSE\n");
+        OutputDebugString(L"ListCandidateView::SetCandidates Failed IsWindow(m_hWnd) == FALSE\n");
         return;
     }
     else
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Succeed IsWindow(m_hwnd) == TRUE\n");
+        OutputDebugString(L"ListCandidateView::SetCandidates Succeed IsWindow(m_hWnd) == TRUE\n");
 	}
     SendMessageW(
-        m_hwnd,
+        m_hWnd,
         LB_RESETCONTENT,
         0,
         0);
@@ -84,7 +123,7 @@ void ListCandidateView::SetCandidates(
 		std::wstring wstrIndex = std::to_wstring(index) + L". ";
 		std::wstring wstrCandidate = wstrIndex + candidate;
         LRESULT result = SendMessageW(
-            m_hwnd,
+            m_hWnd,
             LB_ADDSTRING,
             0,
             reinterpret_cast<LPARAM>(wstrCandidate.c_str()));
@@ -101,13 +140,13 @@ void ListCandidateView::SetCandidates(
 
 int ListCandidateView::GetSelectedIndex() const
 {
-    if (m_hwnd == nullptr)
+    if (m_hWnd == nullptr)
     {
         return -1;
     }
 
     LRESULT result = SendMessageW(
-        m_hwnd,
+        m_hWnd,
         LB_GETCURSEL,
         0,
         0);
@@ -122,13 +161,13 @@ int ListCandidateView::GetSelectedIndex() const
 
 void ListCandidateView::SetSelectedIndex(int index)
 {
-    if (m_hwnd == nullptr)
+    if (m_hWnd == nullptr)
     {
         return;
     }
 
     SendMessageW(
-        m_hwnd,
+        m_hWnd,
         LB_SETCURSEL,
         static_cast<WPARAM>(index),
         0);
@@ -136,13 +175,13 @@ void ListCandidateView::SetSelectedIndex(int index)
 
 void ListCandidateView::Resize(int width, int height)
 {
-    if (m_hwnd == nullptr)
+    if (m_hWnd == nullptr)
     {
         return;
     }
 
     SetWindowPos(
-        m_hwnd,
+        m_hWnd,
         nullptr,
         0,
         0,

@@ -6,6 +6,9 @@ SET(COMMON_FILE ${SOURCE_FOLDER}/CandidateWindow.cpp
 ${SOURCE_FOLDER}/CandidateWindow.h
 ${SOURCE_FOLDER}/ListCandidateView.cpp
 ${SOURCE_FOLDER}/ListCandidateView.h
+${SOURCE_FOLDER}/PreeditWindow.cpp
+${SOURCE_FOLDER}/PreeditWindow.h
+${SOURCE_FOLDER}/WindowBase.cpp
 )
 SET(TEST2_SOURCE_FILE ./test2/TestCore.h 
 ./test2/TestCore.cpp 

@@ -1,9 +1,6 @@
 ﻿#include "TestWindow.h"
 #include "ListCandidateView.h"
 TestWindow::TestWindow()
-    : m_candidateWindow(
-        std::make_unique<ListCandidateView>()),
-      m_core(m_candidateWindow)
 {
     m_candidateSets =
     {
@@ -72,7 +69,7 @@ bool TestWindow::Create(HINSTANCE hInstance)
         m_hInstance,
         this);
 
-	m_candidateWindow.Create(hInstance);
+	//m_candidateWindow.Create(m_hwnd,hInstance);
     if (m_hwnd == nullptr)
     {
         return false;
@@ -198,11 +195,11 @@ void TestWindow::OnCreate()
     m_core.SetCandidates(
         m_candidateSets[m_candidateSetIndex]);
 
-    m_candidateWindow.Move(
-        100,
-        100);
+    //m_candidateWindow.Move(
+    //    100,
+    //    100);
 
-    m_candidateWindow.Show();
+    //m_candidateWindow.Show();
 
     UpdateStatus();
 }
@@ -377,7 +374,7 @@ void TestWindow::OnSize(
 
 void TestWindow::OnDestroy()
 {
-    m_candidateWindow.Hide();
+    //m_candidateWindow.Hide();
 
     PostQuitMessage(0);
 }
@@ -403,8 +400,7 @@ void TestWindow::SwitchCandidateSet()
 
     m_core.SetCandidates(
         m_candidateSets[m_candidateSetIndex]);
-
-    m_candidateWindow.Show();
+    //m_candidateWindow.Show();
 
     UpdateStatus();
 }

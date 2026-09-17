@@ -1,6 +1,7 @@
 #include "CandidateWindow.h"
 #include "ICandidateView.h"
-
+#include "PreeditWindow.h"
+#include "ListCandidateView.h"
 #include <stdexcept>
 
 namespace
@@ -8,22 +9,26 @@ namespace
     const wchar_t* WindowClassName = L"CandidateWindowClass";
 }
 
-CandidateWindow::CandidateWindow(
-    std::unique_ptr<ICandidateView> view)
-    : m_view(std::move(view))
+void CandidateWindow::Destroy()
 {
+
+}
+CandidateWindow::CandidateWindow()
+{
+    m_preeditWindow = std::make_unique<PreeditWindow>();
+    m_CandidateListWindow = std::make_unique<ListCandidateView>();
 }
 
 CandidateWindow::~CandidateWindow()
 {
-    if (m_hwnd != nullptr)
+    if (m_hWnd != nullptr)
     {
-        DestroyWindow(m_hwnd);
-        m_hwnd = nullptr;
+        DestroyWindow(m_hWnd);
+        m_hWnd = nullptr;
     }
 }
 
-bool CandidateWindow::Create(HINSTANCE hInstance)
+bool CandidateWindow::Create(HWND hParent, HINSTANCE hInstance)
 {
     m_hInstance = hInstance;
 
@@ -42,7 +47,7 @@ bool CandidateWindow::Create(HINSTANCE hInstance)
         }
     }
 
-    m_hwnd = CreateWindowEx(
+    m_hWnd = CreateWindowEx(
         WS_EX_TOOLWINDOW,
         WindowClassName,
         L"Candidate Window",
@@ -50,39 +55,35 @@ bool CandidateWindow::Create(HINSTANCE hInstance)
         100,
         100,
         300,
-        200,
+        300,
         nullptr,
         nullptr,
         m_hInstance,
         this);
 
-    if (m_hwnd == nullptr)
+    if (m_hWnd == nullptr)
     {
         return false;
     }
 
-    if(m_view !=nullptr)
+    if(m_CandidateListWindow !=nullptr)
     {
-        if (!m_view->Create(m_hwnd))
+        if (!m_CandidateListWindow->Create(m_hWnd, m_hInstance))
         {
-            DestroyWindow(m_hwnd);
-            m_hwnd = nullptr;
+            DestroyWindow(m_hWnd);
+            m_hWnd = nullptr;
             return false;
         }
 	}
-    return true;
-}
-
-void CandidateWindow::Hide()
-{
-    if (m_hwnd == nullptr)
-        return;
-
-    if (m_view)
+    if (m_preeditWindow != nullptr)
     {
-        m_view->Resize(0, 0);
+        if (m_preeditWindow->Create(m_hWnd, m_hInstance))
+        {
+
+        }
     }
-    ShowWindow(m_hwnd, SW_HIDE);
+    UpdateLayout();
+    return true;
 }
 
 LRESULT CALLBACK CandidateWindow::WndProc(
@@ -106,7 +107,7 @@ LRESULT CALLBACK CandidateWindow::WndProc(
             GWLP_USERDATA,
             reinterpret_cast<LONG_PTR>(window));
 
-        window->m_hwnd = hwnd;
+        window->m_hWnd = hwnd;
     }
     else
     {
@@ -139,12 +140,8 @@ LRESULT CandidateWindow::HandleMessage(
     {
     case WM_CREATE:
     {
-        if (m_view)
+        if (m_CandidateListWindow)
         {
-            if (!m_view->Create(m_hwnd))
-            {
-                return -1;
-            }
         }
 
         return 0;
@@ -154,70 +151,112 @@ LRESULT CandidateWindow::HandleMessage(
     {
         const int width = LOWORD(lParam);
         const int height = HIWORD(lParam);
-
-        if (m_view)
-        {
-            m_view->Resize(width, height);
-        }
-
         return 0;
     }
 
     case WM_CLOSE:
     {
-        DestroyWindow(m_hwnd);
+        DestroyWindow(m_hWnd);
         return 0;
     }
 
     case WM_DESTROY:
     {
-        m_hwnd = nullptr;
+        m_hWnd = nullptr;
         PostQuitMessage(0);
         return 0;
     }
     }
 
     return DefWindowProc(
-        m_hwnd,
+        m_hWnd,
         message,
         wParam,
         lParam);
 }
 
-void CandidateWindow::Show()
+void CandidateWindow::UpdateLayout()
 {
-    if (m_view)
+    Show();
+    static constexpr int PREEDIT_HEIGHT = 30;
+    static constexpr int LIST_WIDTH = 300;
+    static constexpr int LIST_HEIGHT = 200;
+    if (!m_hWnd)
     {
-        m_view->Resize(300,200);
+        return;
     }
-    ShowWindow(m_hwnd, SW_SHOW);
+
+    RECT rect{};
+    GetClientRect(m_hWnd, &rect);
+
+    int width = rect.right - rect.left;
+    int height = rect.bottom - rect.top;
+
+    const int preeditHeight = 30;
+
+    if (m_preeditWindow != nullptr)
+    {
+        // PreeditWindow：位于顶部
+        if (m_preeditWindow->GetHandle())
+        {
+            SetWindowPos(
+                m_preeditWindow->GetHandle(),
+                nullptr,
+                0,
+                0,
+                width,
+                preeditHeight,
+                SWP_NOZORDER | SWP_NOACTIVATE
+            );
+        }
+        m_preeditWindow->Show();
+    }
+
+    // ListBox：位于 PreeditWindow 下方
+    if (m_CandidateListWindow)
+    {
+        SetWindowPos(
+            m_CandidateListWindow->GetHandle(),
+            nullptr,
+            0,
+            preeditHeight,
+            width,
+            height - preeditHeight,
+            SWP_NOZORDER | SWP_NOACTIVATE
+        );
+        m_CandidateListWindow->Show();
+    }
+
 }
-
-
 void CandidateWindow::Move(int x, int y)
 {
     SetWindowPos(
-        m_hwnd,
+        m_hWnd,
         HWND_TOPMOST,
         x,
         y,
         300,
-        200,
+        300,
         SWP_SHOWWINDOW);
+    UpdateLayout();
+}
 
-    if (m_view)
+void CandidateWindow::SetUserInput(const std::wstring& strUserInput)
+{
+    if (nullptr != m_preeditWindow)
     {
-        m_view->Resize(300, 200);
+        m_preeditWindow->SetText(strUserInput);
     }
 }
 
 void CandidateWindow::SetCandidates(
     const std::vector<std::wstring>& candidates)
 {
-    if (m_view)
+    if (m_CandidateListWindow)
     {
-		m_view->SetCandidates(candidates);
+        m_CandidateListWindow->SetCandidates(candidates);
     }
+    UpdateLayout();
 }
 
 int CandidateWindow::GetSelectedIndex() const
@@ -227,13 +266,8 @@ int CandidateWindow::GetSelectedIndex() const
 
 void CandidateWindow::SetSelectedIndex(int index)
 {
-    if (m_view)
+    if (m_CandidateListWindow)
     {
-		m_view->SetSelectedIndex(index);
+        m_CandidateListWindow->SetSelectedIndex(index);
     }
-}
-
-HWND CandidateWindow::GetHandle() const
-{
-    return m_hwnd;
 }

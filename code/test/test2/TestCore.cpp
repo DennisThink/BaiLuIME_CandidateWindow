@@ -1,9 +1,9 @@
 #include "TestCore.h"
 
-TestCore::TestCore(
-    CandidateWindow& candidateWindow)
-    : m_candidateWindow(candidateWindow)
+TestCore::TestCore()
 {
+    m_candidateWindow = new CandidateWindow();
+    m_candidateWindow->Create(NULL,NULL);
 }
 
 void TestCore::SetCandidates(
@@ -16,18 +16,22 @@ void TestCore::SetCandidates(
     {
         m_selectedIndex = -1;
 
-        m_candidateWindow.SetCandidates(
+        m_candidateWindow->SetUserInput(L"nihao");
+        m_candidateWindow->SetCandidates(
             m_candidates);
+        m_candidateWindow->Show();
 
         return;
     }
 
     m_selectedIndex = 0;
 
-    m_candidateWindow.SetCandidates(
+    std::wstring strUserInput = std::to_wstring(std::rand());
+    m_candidateWindow->SetUserInput(strUserInput);
+    m_candidateWindow->SetCandidates(
         m_candidates);
 
-    m_candidateWindow.SetSelectedIndex(
+    m_candidateWindow->SetSelectedIndex(
         m_selectedIndex);
 }
 
@@ -68,8 +72,9 @@ void TestCore::SelectCandidate(int index)
 
     m_selectedIndex = index;
 
-    m_candidateWindow.SetSelectedIndex(
+    m_candidateWindow->SetSelectedIndex(
         m_selectedIndex);
+    m_candidateWindow->Show();
 }
 
 void TestCore::MoveSelection(int delta)
@@ -96,7 +101,7 @@ void TestCore::MoveSelection(int delta)
 
     m_selectedIndex = newIndex;
 
-    m_candidateWindow.SetSelectedIndex(
+    m_candidateWindow->SetSelectedIndex(
         m_selectedIndex);
 }
 

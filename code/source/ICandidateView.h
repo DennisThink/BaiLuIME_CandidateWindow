@@ -4,19 +4,20 @@
 #include <string>
 #include <vector>
 
-class ICandidateView
+//Preedit=Pre-edit
+class IPreedit
 {
 public:
-    virtual ~ICandidateView() = default;
+    virtual ~IPreedit()=default;
+    virtual void SetUserInput(const std::wstring& strUserInput) = 0;
+};
 
-    virtual bool Create(HWND parent) = 0;
-
+class ICandidateList
+{
+public:
+    virtual ~ICandidateList() = default;
     virtual void SetCandidates(
         const std::vector<std::wstring>& items) = 0;
-
     virtual int GetSelectedIndex() const = 0;
-
     virtual void SetSelectedIndex(int index) = 0;
-
-    virtual void Resize(int width, int height) = 0;
 };

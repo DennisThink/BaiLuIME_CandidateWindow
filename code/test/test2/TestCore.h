@@ -9,7 +9,7 @@
 class TestCore
 {
 public:
-    explicit TestCore(CandidateWindow& candidateWindow);
+    explicit TestCore();
 
     void SetCandidates(
         const std::vector<std::wstring>& candidates);
@@ -24,7 +24,7 @@ public:
         m_selectedIndex = -1;
         m_bIsInputFinished = false;
         m_candidates.clear();
-        m_candidateWindow.SetCandidates(m_candidates);
+        m_candidateWindow->SetCandidates(m_candidates);
 	}
 private:
     void SelectCandidate(int index);
@@ -32,7 +32,7 @@ private:
     void CommitCandidate();
 
 private:
-    CandidateWindow& m_candidateWindow;
+    CandidateWindow* m_candidateWindow;
 
     std::vector<std::wstring> m_candidates;
     int m_selectedIndex = -1;

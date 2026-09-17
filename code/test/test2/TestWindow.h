@@ -42,7 +42,7 @@ private:
     HWND m_hwnd = nullptr;
     HINSTANCE m_hInstance = nullptr;
 
-    CandidateWindow m_candidateWindow;
+    //CandidateWindow m_candidateWindow;
     TestCore m_core;
 
     std::vector<std::vector<std::wstring>>
