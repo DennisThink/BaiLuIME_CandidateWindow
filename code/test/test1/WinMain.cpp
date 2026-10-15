@@ -5,13 +5,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 {
     auto view = std::make_unique<ListCandidateView>();
 
-    CandidateWindow window(std::move(view));
+    //CandidateWindow window(std::move(view));
 
-    if (!window.Create(hInstance))
-        return 1;
+    //if (!window.Create(hInstance))
+    //    return 1;
 
+    CandidateWindow window;
     window.Move(300, 300);
-	std::vector<std::wstring> candidates = { L"Candidate 1", L"Candidate 2", L"Candidate 3" };
+	std::vector<std::string> candidates = { "Candidate 1", "Candidate 2", "Candidate 3" };
     window.SetCandidates(candidates);
     window.Show();
     MSG msg{};

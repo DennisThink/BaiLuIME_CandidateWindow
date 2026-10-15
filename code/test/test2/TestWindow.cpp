@@ -316,12 +316,18 @@ void TestWindow::OnPaint()
     y += 30;
 
     {
-        std::string text1 =
-            "Last committed: " +
-            m_lastCommitted.empty()
-            ? "(none)"
-            : m_lastCommitted;
-
+        std::string text1;
+        if(m_lastCommitted.empty())
+        {
+            text1 =
+                "Last committed: (none)";
+        }
+        else
+        {
+            text1 =
+                "Last committed: " + m_lastCommitted;
+		}
+        OutputDebugStringA(text1.c_str());
         TextOutA(
             hdc,
             x,
