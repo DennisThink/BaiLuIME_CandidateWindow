@@ -245,7 +245,7 @@ void CandidateWindow::Move(int x, int y)
     UpdateLayout();
 }
 
-void CandidateWindow::SetUserInput(const std::wstring& strUserInput)
+void CandidateWindow::SetUserInput(const std::string& strUserInput)
 {
     if (nullptr != m_preeditWindow)
     {
@@ -254,7 +254,7 @@ void CandidateWindow::SetUserInput(const std::wstring& strUserInput)
 }
 
 void CandidateWindow::SetCandidates(
-    const std::vector<std::wstring>& candidates)
+    const std::vector<std::string>& candidates)
 {
     if (m_CandidateListWindow)
     {

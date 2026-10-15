@@ -28,7 +28,7 @@ void TestCore::MoveCandidateWindowRight()
 
 
 void TestCore::SetCandidates(
-    const std::vector<std::wstring>& candidates)
+    const std::vector<std::string>& candidates)
 {
 	m_bIsInputFinished = false;
     m_candidates = candidates;
@@ -37,7 +37,7 @@ void TestCore::SetCandidates(
     {
         m_selectedIndex = -1;
 
-        m_candidateWindow->SetUserInput(L"nihao");
+        m_candidateWindow->SetUserInput("nihao");
         m_candidateWindow->SetCandidates(
             m_candidates);
         m_candidateWindow->Show();
@@ -47,7 +47,7 @@ void TestCore::SetCandidates(
 
     m_selectedIndex = 0;
 
-    std::wstring strUserInput = std::to_wstring(std::rand());
+    std::string strUserInput = std::to_string(std::rand());
     m_candidateWindow->SetUserInput(strUserInput);
     m_candidateWindow->SetCandidates(
         m_candidates);
@@ -144,26 +144,26 @@ void TestCore::CommitCandidate()
     }
 
 	m_bIsInputFinished = true;
-    const std::wstring& candidate =
+    const std::string& candidate =
         m_candidates[m_selectedIndex];
 
     OutputDebugStringW(
         L"Selected candidate: ");
 
-    OutputDebugStringW(
+    OutputDebugStringA(
         candidate.c_str());
 
     OutputDebugStringW(L"\n");
 
 }
 
-std::wstring TestCore::GetSelectedCandidate() const
+std::string TestCore::GetSelectedCandidate() const
 {
     if (m_selectedIndex < 0 ||
         m_selectedIndex >=
             static_cast<int>(m_candidates.size()))
     {
-        return L"";
+        return "";
     }
 	return m_candidates[m_selectedIndex];
 }

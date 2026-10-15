@@ -45,10 +45,10 @@ private:
     //CandidateWindow m_candidateWindow;
     TestCore m_core;
 
-    std::vector<std::vector<std::wstring>>
+    std::vector<std::vector<std::string>>
         m_candidateSets;
 
     int m_candidateSetIndex = 0;
 
-    std::wstring m_lastCommitted;
+    std::string m_lastCommitted;
 };

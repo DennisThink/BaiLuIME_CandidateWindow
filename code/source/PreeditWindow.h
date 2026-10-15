@@ -19,7 +19,7 @@ public:
     void Show();
     void Hide();
 
-    void SetText(const std::wstring& text);
+    void SetText(const std::string& text);
 
     // 创建并设置字体
     bool CreateFont(
@@ -66,7 +66,7 @@ private:
 
     HWND m_hWnd;
     HINSTANCE m_hInstance;
-    std::wstring m_text;
+    std::string m_text;
 
     HFONT m_hFont = nullptr;
 

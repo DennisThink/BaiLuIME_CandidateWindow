@@ -12,11 +12,11 @@ public:
     explicit TestCore();
 
     void SetCandidates(
-        const std::vector<std::wstring>& candidates);
+        const std::vector<std::string>& candidates);
 
     void OnKeyDown(WPARAM key);
 
-    std::wstring GetSelectedCandidate() const;
+    std::string GetSelectedCandidate() const;
 	int GetSelectedIndex() const { return m_selectedIndex; }
 	bool IsInputFinished() const { return m_bIsInputFinished; }
     void ResetInput()
@@ -38,7 +38,7 @@ private:
     int m_nStep = 20;
     CandidateWindow* m_candidateWindow;
 
-    std::vector<std::wstring> m_candidates;
+    std::vector<std::string> m_candidates;
     int m_selectedIndex = -1;
 	bool m_bIsInputFinished = false;
 };

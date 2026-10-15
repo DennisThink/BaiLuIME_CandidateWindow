@@ -5,25 +5,25 @@ TestWindow::TestWindow()
     m_candidateSets =
     {
         {
-            L"你好",
-            L"你号",
-            L"拟好",
-            L"泥好"
+            "你好",
+            "你号",
+            "拟好",
+            "泥好"
         },
 
         {
-            L"中国",
-            L"中华",
-            L"中午",
-            L"中央"
+            "中国",
+            "中华",
+            "中午",
+            "中央"
         },
 
         {
-            L"深圳",
-            L"深夜",
-            L"申请",
-            L"身边",
-            L"审判"
+            "深圳",
+            "深夜",
+            "申请",
+            "身边",
+            "审判"
         }
     };
 }
@@ -227,7 +227,7 @@ void TestWindow::OnKeyDown(WPARAM key)
         OutputDebugStringW(
             L"Input finished: ");
 
-        OutputDebugStringW(
+        OutputDebugStringA(
             m_lastCommitted.c_str());
 
         OutputDebugStringW(L"\n");
@@ -315,18 +315,20 @@ void TestWindow::OnPaint()
 
     y += 30;
 
-    text =
-        L"Last committed: " +
-        (m_lastCommitted.empty()
-            ? L"(none)"
-            : m_lastCommitted);
+    {
+        std::string text1 =
+            "Last committed: " +
+            m_lastCommitted.empty()
+            ? "(none)"
+            : m_lastCommitted;
 
-    TextOutW(
-        hdc,
-        x,
-        y,
-        text.c_str(),
-        static_cast<int>(text.length()));
+        TextOutA(
+            hdc,
+            x,
+            y,
+            text1.c_str(),
+            static_cast<int>(text1.length()));
+    }
 
     y += 50;
 

@@ -33,9 +33,9 @@ public:
     void Move(int x, int y);
 
     //Override function for ICandidateGenerator interface
-    virtual void SetUserInput(const std::wstring& strUserInput) override;
+    virtual void SetUserInput(const std::string& strUserInput) override;
     virtual  void SetCandidates(
-        const std::vector<std::wstring>& candidates) override;
+        const std::vector<std::string>& candidates) override;
 
     virtual int GetSelectedIndex() const override;
 

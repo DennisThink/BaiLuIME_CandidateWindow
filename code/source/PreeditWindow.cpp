@@ -95,7 +95,7 @@ void PreeditWindow::Hide()
     }
 }
 
-void PreeditWindow::SetText(const std::wstring& text)
+void PreeditWindow::SetText(const std::string& text)
 {
     m_text = text;
 
@@ -306,7 +306,7 @@ void PreeditWindow::OnPaint()
     SetBkMode(hdc, TRANSPARENT);
 
     // 绘制文字
-    DrawTextW(
+    DrawTextA(
         hdc,
         m_text.c_str(),
         static_cast<int>(m_text.size()),

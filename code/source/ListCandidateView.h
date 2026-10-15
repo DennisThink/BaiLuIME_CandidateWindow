@@ -11,7 +11,7 @@ public:
     bool Create(HWND hParent, HINSTANCE hInstance) override;
 
     void SetCandidates(
-        const std::vector<std::wstring>& items) override;
+        const std::vector<std::string>& items) override;
 
     int GetSelectedIndex() const override;
 

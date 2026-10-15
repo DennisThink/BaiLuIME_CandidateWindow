@@ -89,7 +89,7 @@ bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
 }
 
 void ListCandidateView::SetCandidates(
-    const std::vector<std::wstring>& candidates)
+    const std::vector<std::string>& candidates)
 {
     if (m_hWnd == nullptr)
     {
@@ -120,9 +120,9 @@ void ListCandidateView::SetCandidates(
     for (const auto& candidate : candidates)
     {
 
-		std::wstring wstrIndex = std::to_wstring(index) + L". ";
-		std::wstring wstrCandidate = wstrIndex + candidate;
-        LRESULT result = SendMessageW(
+		std::string strIndex = std::to_string(index) + ". ";
+		std::string wstrCandidate = strIndex + candidate;
+        LRESULT result = SendMessageA(
             m_hWnd,
             LB_ADDSTRING,
             0,
