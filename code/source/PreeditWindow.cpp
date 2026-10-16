@@ -1,5 +1,5 @@
 #include "PreeditWindow.h"
-
+#include "CommonFunction.h"
 bool PreeditWindow::RegisterWindowClass(HINSTANCE hInstance)
 {
     static bool registered = false;
@@ -305,11 +305,12 @@ void PreeditWindow::OnPaint()
     SetTextColor(hdc, m_textColor);
     SetBkMode(hdc, TRANSPARENT);
 
+    std::wstring wstrCandidate = Utf8ToUtf16(m_text);
     // 绘制文字
-    DrawTextA(
+    DrawTextW(
         hdc,
-        m_text.c_str(),
-        static_cast<int>(m_text.size()),
+        wstrCandidate.c_str(),
+        static_cast<int>(wstrCandidate.size()),
         &rect,
         DT_LEFT |
         DT_VCENTER |

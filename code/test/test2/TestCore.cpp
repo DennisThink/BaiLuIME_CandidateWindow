@@ -37,7 +37,7 @@ void TestCore::SetCandidates(
     {
         m_selectedIndex = -1;
 
-        m_candidateWindow->SetUserInput("nihao");
+        m_candidateWindow->SetUserInput(u8"nihao");
         m_candidateWindow->SetCandidates(
             m_candidates);
         m_candidateWindow->Show();

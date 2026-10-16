@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(BaiLuIME_CandidateWindow_Test)
+include_directories(../../external/BaiLuIME_Common/include/)
 SET(TEST1_SOURCE_FILE ./test1/WinMain.cpp)
 SET(SOURCE_FOLDER ../source)
 SET(COMMON_FILE ${SOURCE_FOLDER}/CandidateWindow.cpp
@@ -9,6 +10,7 @@ ${SOURCE_FOLDER}/ListCandidateView.h
 ${SOURCE_FOLDER}/PreeditWindow.cpp
 ${SOURCE_FOLDER}/PreeditWindow.h
 ${SOURCE_FOLDER}/WindowBase.cpp
+../../external/BaiLuIME_Common/src/core/CommonFunction.cpp
 )
 SET(TEST2_SOURCE_FILE ./test2/TestCore.h 
 ./test2/TestCore.cpp 

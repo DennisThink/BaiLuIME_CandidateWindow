@@ -1,29 +1,30 @@
 ﻿#include "TestWindow.h"
 #include "ListCandidateView.h"
+#include "CommonFunction.h"
 TestWindow::TestWindow()
 {
     m_candidateSets =
     {
         {
-            "你好",
-            "你号",
-            "拟好",
-            "泥好"
+            u8"你好",
+            u8"你号",
+            u8"拟好",
+            u8"泥好"
         },
 
         {
-            "中国",
-            "中华",
-            "中午",
-            "中央"
+            u8"中国",
+            u8"中华",
+            u8"中午",
+            u8"中央"
         },
 
         {
-            "深圳",
-            "深夜",
-            "申请",
-            "身边",
-            "审判"
+            u8"深圳",
+            u8"深夜",
+            u8"申请",
+            u8"身边",
+            u8"审判"
         }
     };
 }
@@ -36,18 +37,18 @@ bool TestWindow::Create(HINSTANCE hInstance)
 {
     m_hInstance = hInstance;
 
-    const wchar_t CLASS_NAME[] =
-        L"CandidateWindowTest";
+    const char CLASS_NAME[] =
+        "CandidateWindowTest";
 
-    WNDCLASSW wc = {};
+    WNDCLASSA wc = {};
     wc.lpfnWndProc = TestWindow::WndProc;
     wc.hInstance = m_hInstance;
     wc.lpszClassName = CLASS_NAME;
-    wc.hCursor = LoadCursorW(
+    wc.hCursor = LoadCursorA(
         nullptr,
         IDC_ARROW);
 
-    if (!RegisterClassW(&wc))
+    if (!RegisterClassA(&wc))
     {
         if (GetLastError() != ERROR_CLASS_ALREADY_EXISTS)
         {
@@ -55,10 +56,10 @@ bool TestWindow::Create(HINSTANCE hInstance)
         }
     }
 
-    m_hwnd = CreateWindowExW(
+    m_hwnd = CreateWindowExA(
         0,
         CLASS_NAME,
-        L"CandidateWindow Test",
+        "CandidateWindow Test",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
@@ -328,12 +329,14 @@ void TestWindow::OnPaint()
                 "Last committed: " + m_lastCommitted;
 		}
         OutputDebugStringA(text1.c_str());
-        TextOutA(
+		text1 += "            ";
+		std::wstring wstrLastCommit = Utf8ToUtf16(text1);
+        TextOutW(
             hdc,
             x,
             y,
-            text1.c_str(),
-            static_cast<int>(text1.length()));
+            wstrLastCommit.data(),
+            static_cast<int>(wstrLastCommit.size()));
     }
 
     y += 50;

@@ -1,5 +1,5 @@
 #include "ListCandidateView.h"
-
+#include "CommonFunction.h"
 ListCandidateView::ListCandidateView()
 {
 }
@@ -121,8 +121,9 @@ void ListCandidateView::SetCandidates(
     {
 
 		std::string strIndex = std::to_string(index) + ". ";
-		std::string wstrCandidate = strIndex + candidate;
-        LRESULT result = SendMessageA(
+		std::string strCandidate = strIndex + candidate;
+		std::wstring wstrCandidate = Utf8ToUtf16(strCandidate);
+        LRESULT result = SendMessageW(
             m_hWnd,
             LB_ADDSTRING,
             0,
