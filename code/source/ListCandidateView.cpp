@@ -25,9 +25,9 @@ bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
         return false;
     }
 
-    m_hWnd = CreateWindowExW(
+    m_hWnd = CreateWindowExA(
         0,
-        L"LISTBOX",
+        "LISTBOX",
         nullptr,
         WS_CHILD |
         WS_VISIBLE |
@@ -53,7 +53,7 @@ bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
         //return false;
     }
 
-    m_hFont = CreateFontW(
+    m_hFont = CreateFontA(
         24,                  // 字体高度
         0,                   // 字体宽度，0 表示默认
         0,                   // 字体倾斜角度
@@ -67,7 +67,7 @@ bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
         CLIP_DEFAULT_PRECIS,
         DEFAULT_QUALITY,
         DEFAULT_PITCH | FF_DONTCARE,
-        L"Microsoft YaHei"
+        "Microsoft YaHei"
     );
 
     if (nullptr == m_hFont)
@@ -78,7 +78,7 @@ bool ListCandidateView::Create(HWND hParent, HINSTANCE hInstance)
     {
         OutputDebugStringA("ListCandidateView::CreateFont Succeed\n");
     }
-    SendMessageW(
+    SendMessageA(
         m_hWnd,
         WM_SETFONT,
         reinterpret_cast<WPARAM>(m_hFont),
@@ -93,24 +93,24 @@ void ListCandidateView::SetCandidates(
 {
     if (m_hWnd == nullptr)
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Failed m_hWnd==nullptr\n");
+        OutputDebugStringA("ListCandidateView::SetCandidates Failed m_hWnd==nullptr\n");
         return;
     }
     else
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Succeed\n");
+        OutputDebugStringA("ListCandidateView::SetCandidates Succeed\n");
     }
 
     if(IsWindow(m_hWnd) == FALSE)
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Failed IsWindow(m_hWnd) == FALSE\n");
+        OutputDebugStringA("ListCandidateView::SetCandidates Failed IsWindow(m_hWnd) == FALSE\n");
         return;
     }
     else
     {
-        OutputDebugString(L"ListCandidateView::SetCandidates Succeed IsWindow(m_hWnd) == TRUE\n");
+        OutputDebugStringA("ListCandidateView::SetCandidates Succeed IsWindow(m_hWnd) == TRUE\n");
 	}
-    SendMessageW(
+    SendMessageA(
         m_hWnd,
         LB_RESETCONTENT,
         0,
@@ -130,9 +130,9 @@ void ListCandidateView::SetCandidates(
 
         if (result == LB_ERR || result == LB_ERRSPACE)
         {
-            OutputDebugStringW(
-                L"ListCandidateView::SetCandidates: "
-                L"LB_ADDSTRING failed\n");
+            OutputDebugStringA(
+                "ListCandidateView::SetCandidates: "
+                "LB_ADDSTRING failed\n");
         }
         index++;
     }
@@ -145,7 +145,7 @@ int ListCandidateView::GetSelectedIndex() const
         return -1;
     }
 
-    LRESULT result = SendMessageW(
+    LRESULT result = SendMessageA(
         m_hWnd,
         LB_GETCURSEL,
         0,
@@ -166,7 +166,7 @@ void ListCandidateView::SetSelectedIndex(int index)
         return;
     }
 
-    SendMessageW(
+    SendMessageA(
         m_hWnd,
         LB_SETCURSEL,
         static_cast<WPARAM>(index),

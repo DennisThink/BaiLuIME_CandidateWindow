@@ -9,15 +9,15 @@ bool PreeditWindow::RegisterWindowClass(HINSTANCE hInstance)
         return true;
     }
 
-    WNDCLASSW wc{};
+    WNDCLASSA wc{};
 
     wc.lpfnWndProc = &PreeditWindow::WndProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = CLASS_NAME;
-    wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
+    wc.hCursor = LoadCursorA(nullptr, IDC_ARROW);
     wc.hbrBackground = nullptr;
 
-    if (!RegisterClassW(&wc))
+    if (!RegisterClassA(&wc))
     {
         if (GetLastError() != ERROR_CLASS_ALREADY_EXISTS)
         {
@@ -43,10 +43,10 @@ bool PreeditWindow::Create(HWND hParent, HINSTANCE hInstance)
 
     m_hInstance = hInstance;
 
-    m_hWnd = CreateWindowExW(
+    m_hWnd = CreateWindowExA(
         0,
         CLASS_NAME,
-        L"",
+        "",
         WS_CHILD | WS_VISIBLE,
         0, 0,
         300, 30,
@@ -105,13 +105,13 @@ void PreeditWindow::SetText(const std::string& text)
     }
 }
 
-bool PreeditWindow::CreateFont(
+bool PreeditWindow::SetFont(
     int height,
     int weight,
-    const wchar_t* fontName
+    const char* fontName
 )
 {
-    HFONT hFont = ::CreateFontW(
+    HFONT hFont = ::CreateFontA(
         height,
         0,
         0,

@@ -6,7 +6,7 @@
 
 namespace
 {
-    const wchar_t* WindowClassName = L"CandidateWindowClass";
+    const char* WindowClassName = "CandidateWindowClass";
 }
 
 void CandidateWindow::Destroy()
@@ -18,7 +18,7 @@ CandidateWindow::CandidateWindow()
     m_preeditWindow = std::make_unique<PreeditWindow>();
     if (nullptr != m_preeditWindow)
     {
-        m_preeditWindow->CreateFont(24, 0, L"Microsoft YaHei");
+        m_preeditWindow->SetFont(24, 0, "Microsoft YaHei");
     }
     m_CandidateListWindow = std::make_unique<ListCandidateView>();
 }
@@ -51,10 +51,10 @@ bool CandidateWindow::Create(HWND hParent, HINSTANCE hInstance)
         }
     }
 
-    m_hWnd = CreateWindowEx(
+    m_hWnd = ::CreateWindowExA(
         WS_EX_TOOLWINDOW,
         WindowClassName,
-        L"Candidate Window",
+        "Candidate Window",
         WS_POPUP,
         100,
         100,

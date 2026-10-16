@@ -16,7 +16,7 @@ SET(TEST2_SOURCE_FILE ./test2/TestCore.h
 ./test2/TestWindow.cpp 
 ./test2/main.cpp)
 include_directories(${SOURCE_FOLDER})
-add_compile_definitions(UNICODE _UNICODE)
+#add_compile_definitions(UNICODE _UNICODE)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS") 
 add_executable(windowTest1 ${TEST1_SOURCE_FILE} ${COMMON_FILE})
 add_executable(windowTest2 ${TEST2_SOURCE_FILE} ${COMMON_FILE})

@@ -22,10 +22,10 @@ public:
     void SetText(const std::string& text);
 
     // 创建并设置字体
-    bool CreateFont(
+    bool SetFont(
         int height,
         int weight,
-        const wchar_t* fontName
+        const char* fontName
     );
 
     void SetWindowTextColor(COLORREF color);
@@ -41,8 +41,8 @@ public:
     HWND GetHandle() const;
 
 private:
-    static constexpr wchar_t CLASS_NAME[] =
-        L"WhiteDeer_PreeditWindow";
+    static constexpr char CLASS_NAME[] =
+        "WhiteDeer_PreeditWindow";
 
     static bool RegisterWindowClass(HINSTANCE hInstance);
 
